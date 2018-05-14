@@ -7,6 +7,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.IOException;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements IMediaPlayer.OnPr
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             //surfaceview创建成功后，加载视频
+            Logger.d("surfaceChanged--->");
             load();
         }
 
@@ -59,13 +62,17 @@ public class MainActivity extends AppCompatActivity implements IMediaPlayer.OnPr
 
 
     public void onCLick(View view){
+        Logger.d("onCLick--->");
         if (ijkMediaPlayer != null) {
+            Logger.d("start--->");
             ijkMediaPlayer.start();
         }
     }
 
     @Override
     protected void onDestroy() {
+
+        Logger.d("onDestroy--->");
 
         if (ijkMediaPlayer != null) {
             ijkMediaPlayer.stop();
