@@ -7,18 +7,12 @@
     android:orientation="vertical"
     tools:context="com.hr.myijkplayer.MainActivity">
 
-
-    <SurfaceView
-        android:layout_weight="1"
-        android:id="@+id/surfaceview"
+    <com.hr.myijkplayer.ControlPlayer
+        android:id="@+id/ControlPlayer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onCLick"
-        />
+    </com.hr.myijkplayer.ControlPlayer>
+
 
 </LinearLayout>
