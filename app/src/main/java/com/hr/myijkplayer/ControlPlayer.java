@@ -36,6 +36,9 @@ public class ControlPlayer extends FrameLayout implements
         IMediaPlayer.OnInfoListener,
         IMediaPlayer.OnTimedTextListener{
 
+    private final static  String URLVOIDE = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
+    private final static  String URLLIVE = "rtmp://42.159.206.249:1935/1001/31117091";
+
     IjkMediaPlayer ijkMediaPlayer;
     CusTomSurfaceView cusTomSurfaceView;
 
@@ -66,7 +69,7 @@ public class ControlPlayer extends FrameLayout implements
             return;
         }
 
-        onCreatPlayerView();
+        onCreatPlayerView(URLVOIDE);
 
     }
 
@@ -161,10 +164,7 @@ public class ControlPlayer extends FrameLayout implements
         cusTomSurfaceView =  CusTomSurfaceView.addSurfaceView(getContext(),this,0,this,this);
     }
 
-    private void onCreatPlayerView(){
-
-        GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_16_9);
-
+    private void onCreatPlayerView(String url){
         if(null == ijkMediaPlayer){
             ijkMediaPlayer = new IjkMediaPlayer();
         }
@@ -172,7 +172,8 @@ public class ControlPlayer extends FrameLayout implements
         ijkMediaPlayer.native_setLogLevel(IjkMediaPlayer.IJK_LOG_DEBUG);
         ijkMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
-              ijkMediaPlayer.setDataSource("http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4");
+            ijkMediaPlayer.setDataSource(url);
+             // ijkMediaPlayer.setDataSource("http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4");
             //ijkMediaPlayer.setDataSource("rtmp://42.159.206.249:1935/1001/31117091");
         } catch (IOException e) {
             e.printStackTrace();
@@ -192,6 +193,52 @@ public class ControlPlayer extends FrameLayout implements
         ijkMediaPlayer.prepareAsync();
     }
 
+    /**
+     * 换集
+     */
+    public void exchangeCollect(){
+        stop();
+        release();
+        onCreatPlayerView(URLLIVE);
+    }
+
+    /**
+     * 选择视频显示比例
+     */
+    public void switchProportion(int type){
+
+        GSYVideoType.setShowType(type);
+
+        if(null != cusTomSurfaceView){
+            cusTomSurfaceView.getRenderView().requestLayout();
+        }
+
+    }
+
+
+    /**
+     * 播放或暂停
+     */
+    public void playerOrPause(){
+        if(null != ijkMediaPlayer){
+            if(ijkMediaPlayer.isPlaying()){
+                ijkMediaPlayer.pause();
+            }else {
+                ijkMediaPlayer.start();
+            }
+        }
+    }
+
+    /**
+     * 停止播放
+     */
+    public void stop(){
+        if(null != ijkMediaPlayer){
+            ijkMediaPlayer.stop();
+        }
+    }
+
+    //释放
     public void release(){
         Logger.d("onDestroy--->");
 
@@ -207,5 +254,6 @@ public class ControlPlayer extends FrameLayout implements
 
         }
     }
+
 
 }

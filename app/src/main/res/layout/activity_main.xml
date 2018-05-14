@@ -8,11 +8,44 @@
     tools:context="com.hr.myijkplayer.MainActivity">
 
     <com.hr.myijkplayer.ControlPlayer
+        android:layout_weight="1"
         android:id="@+id/ControlPlayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </com.hr.myijkplayer.ControlPlayer>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始暂停"
+            android:id="@+id/btn_play_pause"
+            android:onClick="onClick"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="比例切换"
+            android:id="@+id/btn_proportion_switch"
+            android:onClick="onClick"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="换集"
+            android:id="@+id/btn_switch_thing"
+            android:onClick="onClick"
+            />
+
+
+    </LinearLayout>
 
 
 </LinearLayout>
