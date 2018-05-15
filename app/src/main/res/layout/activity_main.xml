@@ -7,13 +7,13 @@
     android:orientation="vertical"
     tools:context="com.hr.myijkplayer.MainActivity">
 
-    <com.hr.myijkplayer.ControlPlayer
+    <com.hr.myijkplayer.ControlIjkPlayer
         android:layout_weight="1"
         android:id="@+id/ControlPlayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.hr.myijkplayer.ControlPlayer>
+    </com.hr.myijkplayer.ControlIjkPlayer>
 
     <LinearLayout
         android:layout_width="wrap_content"

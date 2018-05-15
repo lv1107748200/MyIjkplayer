@@ -25,7 +25,7 @@ import tv.danmaku.ijk.media.player.IjkTimedText;
  * Created by 吕 on 2018/5/14.
  */
 
-public class ControlPlayer extends FrameLayout implements
+public class ControlIjkPlayer extends FrameLayout implements
         IGSYSurfaceListener,
         MeasureHelper.MeasureFormVideoParamsListener,
         IMediaPlayer.OnPreparedListener ,
@@ -43,15 +43,15 @@ public class ControlPlayer extends FrameLayout implements
     IjkMediaPlayer ijkMediaPlayer;
     CusTomSurfaceView cusTomSurfaceView;
 
-    public ControlPlayer(@NonNull Context context) {
+    public ControlIjkPlayer(@NonNull Context context) {
         this(context,null);
     }
 
-    public ControlPlayer(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public ControlIjkPlayer(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs,0);
     }
 
-    public ControlPlayer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ControlIjkPlayer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

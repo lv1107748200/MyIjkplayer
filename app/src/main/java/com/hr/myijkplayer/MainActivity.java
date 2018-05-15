@@ -1,7 +1,6 @@
 package com.hr.myijkplayer;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,7 +12,7 @@ import static com.hr.mylibrary.utils.GSYVideoType.SCREEN_MATCH_FULL;
 
 public class MainActivity extends Activity {
 
-    private ControlPlayer controlPlayer;
+    private ControlIjkPlayer controlPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
