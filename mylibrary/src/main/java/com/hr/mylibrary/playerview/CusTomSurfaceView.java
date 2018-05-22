@@ -77,8 +77,8 @@ public class CusTomSurfaceView extends SurfaceView implements SurfaceHolder.Call
 
     @Override
     public void surfaceRedrawNeeded(SurfaceHolder holder) {
-    }
 
+    }
     @Override
     public IGSYSurfaceListener getIGSYSurfaceListener() {
         return mIGSYSurfaceListener;
@@ -209,6 +209,15 @@ public class CusTomSurfaceView extends SurfaceView implements SurfaceHolder.Call
         return showSurfaceView;
     }
 
+    public static CusTomSurfaceView addSurfaceViewSupter( CusTomSurfaceView showSurfaceView, ViewGroup textureViewContainer) {
+        if (textureViewContainer.getChildCount() > 0) {
+            textureViewContainer.removeAllViews();
+        }
+
+        addToParent(textureViewContainer, showSurfaceView);
+
+        return showSurfaceView;
+    }
 
     public static void addToParent(ViewGroup textureViewContainer, View render) {
 

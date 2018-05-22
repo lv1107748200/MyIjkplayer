@@ -1,7 +1,6 @@
 package com.hr.myijkplayer;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -9,12 +8,13 @@ import android.view.View;
 import com.hr.mylibrary.player.IjkPlayerMger;
 import com.orhanobut.logger.Logger;
 
-import static com.hr.mylibrary.utils.GSYVideoType.SCREEN_MATCH_FULL;
 import static com.hr.mylibrary.utils.GSYVideoType.SCREEN_TYPE_16_9;
 
+/**
+ * Created by 吕 on 2018/5/16.
+ */
 
-public class MainActivity extends Activity {
-
+public class TwoActivity extends Activity {
     private ControlIjkPlayer controlPlayer;
 
     @Override
@@ -32,21 +32,7 @@ public class MainActivity extends Activity {
         switch (view.getId()){
             case R.id.btn_play_pause:
 
-
-
-
-
-              if(IjkPlayerMger.getInstance().getMediaPlayer().isPlaying()){
-                  IjkPlayerMger.getInstance().getMediaPlayer().stop();
-              }
-              IjkPlayerMger.getInstance().rePanduan();
-
-                controlPlayer.removeView();
-
-
-                Intent intent = new Intent(this,TwoActivity.class);
-
-                 startActivity(intent);
+                controlPlayer.playerOrPause();
 
                 break;
             case R.id.btn_proportion_switch:
@@ -73,7 +59,7 @@ public class MainActivity extends Activity {
             case KeyEvent.KEYCODE_DPAD_CENTER:
                 Logger.d("enter--->");
 
-         //       controlPlayer.playerOrPause();//遥控确定键
+                controlPlayer.playerOrPause();//遥控确定键
 
 
                 break;
@@ -140,9 +126,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
 
-       // controlPlayer.release();
+        controlPlayer.release();
 
-        IjkPlayerMger.getInstance().setOnDesry();
 
         super.onDestroy();
     }

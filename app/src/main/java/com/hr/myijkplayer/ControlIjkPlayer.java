@@ -9,6 +9,7 @@ import android.view.Surface;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.hr.mylibrary.player.IjkPlayerMger;
 import com.hr.mylibrary.playerview.CusTomSurfaceView;
 import com.hr.mylibrary.playerview.IGSYSurfaceListener;
 import com.hr.mylibrary.utils.GSYVideoType;
@@ -26,8 +27,6 @@ import tv.danmaku.ijk.media.player.IjkTimedText;
  */
 
 public class ControlIjkPlayer extends FrameLayout implements
-        IGSYSurfaceListener,
-        MeasureHelper.MeasureFormVideoParamsListener,
         IMediaPlayer.OnPreparedListener ,
         IMediaPlayer.OnVideoSizeChangedListener ,
         IMediaPlayer.OnSeekCompleteListener,
@@ -38,10 +37,11 @@ public class ControlIjkPlayer extends FrameLayout implements
         IMediaPlayer.OnTimedTextListener{
 
     private final static  String URLVOIDE = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
+    private final static  String URLVOIDE3 = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f30.mp4";
     private final static  String URLLIVE = "rtmp://42.159.206.249:1935/1001/31117091";
 
     IjkMediaPlayer ijkMediaPlayer;
-    CusTomSurfaceView cusTomSurfaceView;
+
 
     public ControlIjkPlayer(@NonNull Context context) {
         this(context,null);
@@ -58,70 +58,10 @@ public class ControlIjkPlayer extends FrameLayout implements
 
 
     @Override
-    public void onSurfaceAvailable(Surface surface) {
-
-    }
-
-    @Override
-    public void onSurfaceSizeChanged(Surface surface, int width, int height) {
-        Logger.d("onSurfaceSizeChanged--->");
-
-        if(null != ijkMediaPlayer){
-            return;
-        }
-
-        onCreatPlayerView(URLVOIDE);
-
-    }
-
-    @Override
-    public boolean onSurfaceDestroyed(Surface surface) {
-        return false;
-    }
-
-    @Override
-    public void onSurfaceUpdated(Surface surface) {
-
-    }
-
-    @Override
-    public int getCurrentVideoWidth() {
-        if(null != ijkMediaPlayer){
-            return ijkMediaPlayer.getVideoWidth();
-        }
-        return 0;
-    }
-
-    @Override
-    public int getCurrentVideoHeight() {
-        if(null != ijkMediaPlayer){
-            return ijkMediaPlayer.getVideoHeight();
-        }
-        return 0;
-    }
-
-    @Override
-    public int getVideoSarNum() {
-        if(null != ijkMediaPlayer){
-            return ijkMediaPlayer.getVideoSarNum();
-        }
-        return 0;
-    }
-
-    @Override
-    public int getVideoSarDen() {
-        if(null != ijkMediaPlayer){
-            return ijkMediaPlayer.getVideoSarDen();
-        }
-        return 0;
-    }
-
-
-    @Override
     public void onPrepared(IMediaPlayer iMediaPlayer) {
         Logger.d("onPrepared--->");
+      //  GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_16_9);
 
-        cusTomSurfaceView.getRenderView().requestLayout();
     }
 
     @Override
@@ -162,103 +102,38 @@ public class ControlIjkPlayer extends FrameLayout implements
     }
 
     private void init(){
-        cusTomSurfaceView =  CusTomSurfaceView.addSurfaceView(getContext(),this,0,this,this);
 
+            CusTomSurfaceView.addSurfaceViewSupter(IjkPlayerMger.getInstance().getCusTomSurfaceView(getContext()),this);
+             exchangeCollectOther();
         View view =  View.inflate(getContext(), R.layout.video_control_layout_ijk,this);
-
-
-
-    }
-
-    private void onCreatPlayerView(String url){
-        if(null == ijkMediaPlayer){
-            ijkMediaPlayer = new IjkMediaPlayer();
-        }
-
-        ijkMediaPlayer.native_setLogLevel(IjkMediaPlayer.IJK_LOG_DEBUG);
-        ijkMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            ijkMediaPlayer.setDataSource(url);
-             // ijkMediaPlayer.setDataSource("http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4");
-            //ijkMediaPlayer.setDataSource("rtmp://42.159.206.249:1935/1001/31117091");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //给mediaPlayer设置视图
-        ijkMediaPlayer.setDisplay(cusTomSurfaceView.getHolder());
-
-        ijkMediaPlayer.setOnPreparedListener(this);
-        ijkMediaPlayer.setOnCompletionListener(this);
-        ijkMediaPlayer.setOnBufferingUpdateListener(this);
-        ijkMediaPlayer.setOnSeekCompleteListener(this);
-        ijkMediaPlayer.setOnVideoSizeChangedListener(this);
-        ijkMediaPlayer.setOnErrorListener(this);
-        ijkMediaPlayer.setOnInfoListener(this);
-        ijkMediaPlayer.setOnTimedTextListener(this);
-
-        ijkMediaPlayer.prepareAsync();
     }
 
     /**
      * 换集
      */
-    public void exchangeCollect(){
-        stop();
-        release();
-        onCreatPlayerView(URLLIVE);
-    }
+    public void exchangeCollectOther(){
 
-    /**
-     * 选择视频显示比例
-     */
-    public void switchProportion(int type){
+        IjkPlayerMger.getInstance().initMediaPlayer(URLLIVE, new IjkPlayerMger.IjkPlayerCallBack() {
+            @Override
+            public void mangerCallBack(IjkMediaPlayer mediaPlayer) {
 
-        GSYVideoType.setShowType(type);
+                mediaPlayer.setOnPreparedListener(ControlIjkPlayer.this);
+                mediaPlayer.setOnCompletionListener(ControlIjkPlayer.this);
+                mediaPlayer.setOnBufferingUpdateListener(ControlIjkPlayer.this);
+                mediaPlayer.setOnSeekCompleteListener(ControlIjkPlayer.this);
+                mediaPlayer.setOnVideoSizeChangedListener(ControlIjkPlayer.this);
+                mediaPlayer.setOnErrorListener(ControlIjkPlayer.this);
+                mediaPlayer.setOnInfoListener(ControlIjkPlayer.this);
+                mediaPlayer.setOnTimedTextListener(ControlIjkPlayer.this);
 
-        if(null != cusTomSurfaceView){
-            cusTomSurfaceView.getRenderView().requestLayout();
-        }
-
-    }
-
-
-    /**
-     * 播放或暂停
-     */
-    public void playerOrPause(){
-        if(null != ijkMediaPlayer){
-            if(ijkMediaPlayer.isPlaying()){
-                ijkMediaPlayer.pause();
-            }else {
-                ijkMediaPlayer.start();
+                mediaPlayer.prepareAsync();
             }
-        }
+        });
+
+
     }
-
-    /**
-     * 停止播放
-     */
-    public void stop(){
-        if(null != ijkMediaPlayer){
-            ijkMediaPlayer.stop();
-        }
-    }
-
-    //释放
-    public void release(){
-        Logger.d("onDestroy--->");
-
-        if (ijkMediaPlayer != null) {
-
-            ijkMediaPlayer.stop();
-            ijkMediaPlayer.reset();
-            ijkMediaPlayer.release();
-
-            ijkMediaPlayer = null;
-
-            IjkMediaPlayer.native_profileEnd();
-        }
-
+    public void removeView(){
+        removeView(IjkPlayerMger.getInstance().getCusTomSurfaceView(getContext()));
     }
 
 
